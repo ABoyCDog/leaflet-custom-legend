@@ -8,7 +8,7 @@
 
 [demo代码链接](https://github.com/ABoyCDog/leaflet-custom-legend/blob/master/example/taskLegend.html)
 <br>
-[demo页面链接](https://raw.githack.com/ABoyCDog/leaflet-custom-legend/master/example/taskLegend.html)
+[demo页面链接](http://htmlpreview.github.io/?https://raw.githack.com/ABoyCDog/leaflet-custom-legend/master/example/taskLegend.html)
 
  ![images](example/images/demo.png)
  ![images](example/images/demo2.png)
