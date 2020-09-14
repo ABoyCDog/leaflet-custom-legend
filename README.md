@@ -6,6 +6,8 @@
 
 # Demo
 
+[demo链接](https://github.com/ABoyCDog/leaflet-custom-legend/blob/master/example/taskLegend.html)
+
  ![images](example/images/demo.png)
  ![images](example/images/demo2.png)
  ![images](example/images/demo3.png)
