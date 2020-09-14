@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Leaflet legend control</title>
+    <meta charset="utf-8" />
+    <style type="text/css">
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        html,
+        body,
+        #map {
+            height: 100%;
+        }
+        .buttonStyle {
+            margin: 3px;
+            padding: 3px;
+            color: white;
+            background-color:blue;
+        }
+
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <link rel="stylesheet" href="../src/leaflet.setLegend.css" />
+    <script type="text/javascript" src="../src/leaflet.setLegend.js"></script>
+</head>
+
+<body>
+    <div id="map">
+        <div id="toolbar" style="position:absolute; bottom: 10px; left:200px;z-index:1000;">
+            <input type="button" class="buttonStyle" value="应急专家图例" style="width: 100px;" onclick="addExpert();">
+            <input type="button" class="buttonStyle" value="危险源图例" style="width: 100px;" onclick="addDanger();">
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    var map = L.map("map", {
+        center: [39.597751, 116.201293],
+        zoom: 8
+    });
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+	}).addTo(map);
+
+    var removeFlag = false // 设置flag 记住content状态
+
+    /**
+     * 图例API 有去重功能 
+     * @param {string} [position] - 图例控件位置
+     * @param {string} [title] - 图例标题
+     * @param {string} [legendType] - 图例类型
+     * @param {array}  [imgArr] - 图文型图例参数（对象数组，含图片url与文字描述）
+     * @param {array}  [colorArr] - 颜色型图例参数数组（对象数组，含颜色及对应文字描述）
+     * @param {string} [imgId] - 对应img图例的唯一标识id
+     * @param {string} [colorId] - 对应color图例的唯一标识id
+     * @param {bool}   [isShow] - 显示隐藏
+    */
+    function legendfn(position, title, legendType, imgArr, colorArr, imgId, colorId, isShow) {
+        // imgType 图文型图例
+        if(legendType === 'imgType') {
+            if(isShow) { // 显示
+                if(!this.legendCtrl) { // 判断控件是否初始化 否 新建控件
+                    this.legendCtrl = new L.Control.setLegend({
+                        position: position,
+                        title: title,
+                        legendType: legendType,
+                        imgArr: imgArr,
+                        colorArr: colorArr,
+                        imgId: imgId,
+                        colorId: colorId 
+                    })
+                    this.legendCtrl.addTo(map)
+                } else { // 控件legendCtrl已初始化 则只添加对应的imgContent
+                    // legendCtrl由于已被remove，故需重新addTo(map)  
+                    // 但由于legendCtrl没自动更新，残留着remove前的最后一个div
+                    // 所以addTo(map)后需要将控件的content置空，然后再添加对应的图例
+                    if(this.removeFlag) {
+                        this.legendCtrl.addTo(map)
+                        // 此处应该加一个将content置空的this.legendCtrl
+                        this.legendCtrl.setContentToNULL()
+                        this.removeFlag = false
+                    }
+                    this.legendCtrl.setImgContent(title, legendType, imgArr, imgId)
+                }
+            } else { // 隐藏
+                // 删除对应的imgContent div
+                this.legendCtrl.removeImgContent(imgId)
+                // 判断控件为空时将控件移除
+                    let judgeConetent =  this.legendCtrl.judgeContent()
+                    if(judgeConetent) {
+                        this.legendCtrl.remove()
+                        // 设置flag 记住content状态
+                        this.removeFlag = true
+                    }
+            }
+        }
+        // colorType 专题图颜色型图例
+        if(legendType === 'colorType') {
+            if(isShow) { // 显示
+                if(!this.legendCtrl) { // 判断控件是否初始化 否 新建控件
+                    this.legendCtrl = new L.Control.setLegend({
+                        position: position,
+                        title: title,
+                        legendType: legendType,
+                        imgArr: imgArr,
+                        colorArr: colorArr,
+                        imgId: imgId,
+                        colorId: colorId
+                    })
+                    this.legendCtrl.addTo(map)
+                } else { // 已初始化 则只添加对应的colorContent
+                        // 添加对应的colorContent div
+                        if(this.removeFlag) {
+                            this.legendCtrl.addTo(map)
+                            this.legendCtrl.setContentToNULL()
+                            this.removeFlag = false
+                        }
+                        this.legendCtrl.setColorContent(title, legendType, colorArr, colorId)
+                }
+            } else { // 隐藏
+                // 删除对应的colorContent div
+                this.legendCtrl.removeColorContent(colorId)
+                // 判断控件为空时将控件移除
+                let judgeConetent =  this.legendCtrl.judgeContent()
+                if(judgeConetent) {
+                    this.legendCtrl.remove()
+                    this.removeFlag = true
+                }
+            }
+        }
+
+        return this.legendCtrl
+    }
+
+    /**
+    * 图例
+    * @param: {layerName} (String) 图层名
+    * @param: {isShow} (Boolean) 显示隐藏
+    * @param: {position} (String) 图例控件位置
+    */
+    // 图标数组
+    var imgArr = [
+        {
+            url: './images/expert.png',
+            size: [20, 20],
+            label: '应急专家'
+        },{
+            url: './images/team.png',
+            size: [20, 20],
+            label: '救援队伍'
+        },{
+            url: './images/resource.png',
+            size: [20, 20],
+            label: '应急物资'
+        },{
+            url: './images/danger.png',
+            size: [20, 20],
+            label: '危险源'
+        },{
+            url: './images/red.png',
+            size: [20, 20],
+            label: '事发地'
+        }]
+    setLegend = function(layerName, isShow, position) {
+        // console.log('添加图例：', layerName)
+        for(let i = 0; i < imgArr.length; i++) {
+            if(layerName === imgArr[i].label) {
+                let imgToArr = []
+                imgToArr.push(imgArr[i])
+                legendfn(position,'','imgType',imgToArr,[],layerName,'',isShow)
+            }
+        } 
+        return layerName
+    }
+
+
+    // 用例
+    setLegend('救援队伍', true, 'bottomleft')
+    setLegend('应急物资', true, 'bottomleft')
+    setLegend('事发地', true, 'bottomleft')
+
+    var showExpert = false
+    function addExpert() {
+        showExpert = !showExpert
+        setLegend('应急专家', showExpert, 'bottomleft')
+    }
+    var showDanger = false
+    function addDanger() {
+        showDanger = !showDanger
+        setLegend('危险源', showDanger, 'bottomleft')
+    }
+
+</script>
+
+</html>

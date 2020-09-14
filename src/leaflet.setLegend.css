@@ -1,0 +1,78 @@
+.leaflet-control-clegend {
+    /* width: 180px; */
+    z-index: 9999;
+    color: black; /* 字体颜色 */
+    background-color: rgb(7, 144, 223);
+    /* padding: 8px 5px 5px 5px; */
+    padding: 0px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 0 10px rgba(105, 105, 105, 0.5);
+    -moz-box-shadow: 0 0 10px rgba(105, 105, 105, 0.5);
+    box-shadow: 0 0 10px rgba(105, 105, 105, 0.5);
+}
+.leaflet-control-max-div {
+    width: 180px;
+    /* z-index: 9999; */
+    color: black; /* 字体颜色 */
+    /* background-color: rgb(7, 144, 223); */
+    /* padding: 8px 5px 5px 5px; */
+    /* border-radius: 5px; */
+    /* -webkit-box-shadow: 0 0 10px rgba(105, 105, 105, 0.5); */
+    /* -moz-box-shadow: 0 0 10px rgba(105, 105, 105, 0.5); */
+    /* box-shadow: 0 0 10px rgba(105, 105, 105, 0.5); */
+}
+.leaflet-control-clegend ul {
+    margin:0;
+    padding:0;
+} 
+
+.leaflet-control-clegend ul li {
+    font-family:'Microsoft YaHei';
+    font-size:16px;
+    margin-bottom:5px;
+    list-style-type: none;
+    padding-left:10px
+}
+
+.leaflet-control-legend-close {
+    position: absolute;
+    right: 6px;
+    top: 5px;
+    color: white;
+}
+.leaflet-control-clegend-title {
+    text-align: center;
+    /* font-Weight: bold; */
+    font-Size: 14px;
+    color: white;
+    margin-top: 5px;
+}
+.leaflet-control-legend-content {
+    position:relative;
+    width:100%;
+    margin-top: 2px;
+    padding: 8px 0 8px 0;
+    border-radius: 3px;
+    background-color: white;
+}
+.leaflet-control-legend-content-title {
+    margin-left: 58px;
+    color:black;
+}
+.legend-imgitem-div {
+    background-color: white;
+}
+.legend-coloritem-div {
+    background-color: white;
+}
+.show-legend-button {
+    /* position: absolute;
+    top: 10px;
+    left: 10px; */
+    width: 60px;
+    height: 30px;
+    border: 0px;
+    border-radius: 3px;
+    color: white;
+    background: rgb(7, 144, 223);
+}
